@@ -1,16 +1,22 @@
-﻿using System;
+﻿using BusTicket.Domain.Base;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BusTicket.Domain.Entities
 {
-    public sealed class Route
+    [Table ("Ruta")]
+    public sealed class Route : AuditEntity<int>
     {
-        public int RouteId {  get; set; }
+        [Key]
+        [Column ("IdRuta")]
+        public override int Id { get; set; }
         public string PickUpLocation { get; set; }
         public string Destination { get;set; }
-
+        
     }
 }

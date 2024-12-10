@@ -1,20 +1,14 @@
-﻿using BusTicket.Domain.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusTicket.Domain.Entities
+namespace BusTicket.Persistence.Models.Trip
 {
-    [Table ("Viaje")]
-    public sealed class Trip : AuditEntity<int>
+    public class TripModel
     {
-        [Key]
-        [Column ("IdViaje")]
-        public override int Id { get; set; }
+        public int IdViaje { get; set; }
         public int IdBus { get; set; }
         public int IdRuta { get; set; }
         public DateTime FechaSalida { get; set; }
