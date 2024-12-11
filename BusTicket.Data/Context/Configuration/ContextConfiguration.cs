@@ -12,7 +12,7 @@ namespace BusTicket.Data.Context.Configuration
 {
     public partial class BoletoContext : DbContext
     {   
-        public DbSet<Bus> Buses { get; set; }
+        public DbSet<Bus> Bus { get; set; }
         public DbSet<Seat> Asiento { get; set; }
         public DbSet<Driver> Conductor { get; set; }
         public DbSet<BusDriver> ConductorBus { get; set; }

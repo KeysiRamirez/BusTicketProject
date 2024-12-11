@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusTicket.Data.Entities
 {
-    [Table("Bus")]
+    [Table("Bus", Schema = "dbo")]
     public sealed class Bus : AuditEntity<int>
     {
         public Bus()
@@ -25,7 +25,7 @@ namespace BusTicket.Data.Entities
         public int CapacidadPiso1 { get; set; }
         public int CapacidadPiso2 { get; set; }
         public int CapacidadTotal { get; set; }
-        public int Disponible { get; set; }
+        public bool Disponible { get; set; }
 
     }
 }

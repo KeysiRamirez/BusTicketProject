@@ -5,13 +5,11 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Data", "BusTicket.Data\BusTicket.Data.csproj", "{E58E268C-D36F-4FE8-A1C9-9AB8D682BCD2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Domain", "BusTicket.Domain\BusTicket.Domain.csproj", "{A808F1E6-4606-4C7A-A10C-1556AFCE7032}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Application", "BusTicket.Application\BusTicket.Application.csproj", "{5B9BF3A9-771F-417B-8445-F1B862607525}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Web", "BusTicket.Web\BusTicket.Web.csproj", "{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.API", "BusTicket.API\BusTicket.API.csproj", "{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusTicket.Web.API", "BusTicket.Web.API\BusTicket.Web.API.csproj", "{8EBC8703-1A20-4E5B-A0FB-5CEFA441B769}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +21,6 @@ Global
 		{E58E268C-D36F-4FE8-A1C9-9AB8D682BCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E58E268C-D36F-4FE8-A1C9-9AB8D682BCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E58E268C-D36F-4FE8-A1C9-9AB8D682BCD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A808F1E6-4606-4C7A-A10C-1556AFCE7032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A808F1E6-4606-4C7A-A10C-1556AFCE7032}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A808F1E6-4606-4C7A-A10C-1556AFCE7032}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A808F1E6-4606-4C7A-A10C-1556AFCE7032}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B9BF3A9-771F-417B-8445-F1B862607525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B9BF3A9-771F-417B-8445-F1B862607525}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B9BF3A9-771F-417B-8445-F1B862607525}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B9BF3A9-771F-417B-8445-F1B862607525}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +29,10 @@ Global
 		{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBC8703-1A20-4E5B-A0FB-5CEFA441B769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBC8703-1A20-4E5B-A0FB-5CEFA441B769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBC8703-1A20-4E5B-A0FB-5CEFA441B769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBC8703-1A20-4E5B-A0FB-5CEFA441B769}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

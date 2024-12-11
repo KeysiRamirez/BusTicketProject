@@ -15,8 +15,7 @@ namespace BusTicket.Data.Repositories
         private readonly BoletoContext _boletoContext;
         private readonly ILogger<BusRepository> _logger;
 
-        public BusRepository(BoletoContext boletoContext,
-                             ILogger<BusRepository> logger)
+        public BusRepository(BoletoContext boletoContext, ILogger<BusRepository> logger)
         {
             _boletoContext = boletoContext;
             _logger = logger;
@@ -24,7 +23,7 @@ namespace BusTicket.Data.Repositories
 
         public async Task<bool> Exists(Expression<Func<Bus, bool>> filter)
         {
-            return await _boletoContext.Buses.AnyAsync(filter);
+            return await _boletoContext.Bus.AnyAsync(filter);
         }
 
         public async Task<OperationResult<List<BusModel>>> GetAll()
@@ -33,7 +32,7 @@ namespace BusTicket.Data.Repositories
 
             try
             {
-                var buses = await _boletoContext.Buses
+                var buses = await _boletoContext.Bus
                                          .Where(cd => cd.Estatus == true)
                                          .OrderByDescending(cd => cd.FechaModificacion)
                                          .Select(cd => new BusModel()
@@ -65,7 +64,7 @@ namespace BusTicket.Data.Repositories
 
             try
             {
-                var buses = await _boletoContext.Buses
+                var buses = await _boletoContext.Bus
                                          .Where(filter)
                                          .Select(cd => new BusModel()
                                          {
@@ -110,7 +109,7 @@ namespace BusTicket.Data.Repositories
                 }
 
 
-                var bus = await _boletoContext.Buses.FindAsync(Id);
+                var bus = await _boletoContext.Bus.FindAsync(Id);
 
                 if (bus is null)
                 {
@@ -153,7 +152,7 @@ namespace BusTicket.Data.Repositories
                     return operationResult;
                 }
 
-                var bus = await _boletoContext.Buses.FindAsync(entity.Id);
+                var bus = await _boletoContext.Bus.FindAsync(entity.Id);
 
                 if (bus is null)
                 {
@@ -166,7 +165,7 @@ namespace BusTicket.Data.Repositories
                 bus.FechaModificacion = bus.FechaModificacion;
                 bus.UsuarioModificacion = bus.UsuarioModificacion;
 
-                _boletoContext.Buses.Update(bus);
+                _boletoContext.Bus.Update(bus);
                 await _boletoContext.SaveChangesAsync();
 
                 operationResult.Message = $"El bus {entity.Nombre} fue desactivado correctamente.";
@@ -203,7 +202,7 @@ namespace BusTicket.Data.Repositories
                     return operationResult;
                 }
 
-                _boletoContext.Buses.Add(entity);
+                _boletoContext.Bus.Add(entity);
                 await _boletoContext.SaveChangesAsync();
 
                 operationResult.Message = $"El bus {entity.Nombre} fue agregado correctamente.";
@@ -231,7 +230,7 @@ namespace BusTicket.Data.Repositories
                     return operationResult;
                 }
 
-                var bus = await _boletoContext.Buses.FindAsync(entity.Id);
+                var bus = await _boletoContext.Bus.FindAsync(entity.Id);
 
                 if (bus is null)
                 {
@@ -249,7 +248,7 @@ namespace BusTicket.Data.Repositories
                 bus.UsuarioModificacion = entity.UsuarioModificacion;
 
 
-                _boletoContext.Buses.Update(bus);
+                _boletoContext.Bus.Update(bus);
                 await _boletoContext.SaveChangesAsync();
 
                 operationResult.Message = $"El bus {entity.Nombre} fue actualizado correctamente.";

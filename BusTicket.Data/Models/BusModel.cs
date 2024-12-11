@@ -15,7 +15,7 @@ namespace BusTicket.Data.Models
         public int CapacidadPiso1 { get; set; }
         public int CapacidadPiso2 { get; set; }
         public int CapacidadTotal { get; set; }
-        public int Disponible { get; set; }
+        public bool Disponible { get; set; }
         public DateTime FechaCreacion { get; set; }
 
     }
