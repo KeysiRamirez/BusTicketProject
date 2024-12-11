@@ -30,7 +30,7 @@ namespace BusTicket.Persistence.Repository
             }
 
             return result;
-        }
+        }   
 
         public virtual async Task<List<TEntity>> GetAll()
         {

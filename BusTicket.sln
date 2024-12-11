@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Domain", "BusTick
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Application", "BusTicket.Application\BusTicket.Application.csproj", "{5B9BF3A9-771F-417B-8445-F1B862607525}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Persistence", "BusTicket.Persistence\BusTicket.Persistence.csproj", "{7A015FA3-5530-48B6-BE7B-CA1F7455CEF7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.Web", "BusTicket.Web\BusTicket.Web.csproj", "{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusTicket.API", "BusTicket.API\BusTicket.API.csproj", "{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusTicket.API", "BusTicket.API\BusTicket.API.csproj", "{9528DF63-DA66-46B5-BAD0-C12EDEE6BDD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{5B9BF3A9-771F-417B-8445-F1B862607525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B9BF3A9-771F-417B-8445-F1B862607525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B9BF3A9-771F-417B-8445-F1B862607525}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A015FA3-5530-48B6-BE7B-CA1F7455CEF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A015FA3-5530-48B6-BE7B-CA1F7455CEF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A015FA3-5530-48B6-BE7B-CA1F7455CEF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A015FA3-5530-48B6-BE7B-CA1F7455CEF7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CA36AB-8E60-438B-A6ED-1B8E00FF68C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
