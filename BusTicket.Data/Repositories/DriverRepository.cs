@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using BusTicket.Data.Entities;
 using BusTicket.Data.Models;
 using BusTicket.Data.Base;
-using BusTicket.Data.Context.Configuration;
+using BusTicket.Data.Context;
 
 namespace BusTicket.Data.Repositories
 {
@@ -14,16 +14,10 @@ namespace BusTicket.Data.Repositories
         private readonly BoletoContext _boletoContext;
         private readonly ILogger<DriverRepository> _logger;
 
-        public DriverRepository(BoletoContext boletoContext,
-                                 ILogger<DriverRepository> logger)
+        public DriverRepository(BoletoContext boletoContext, ILogger<DriverRepository> logger)
         {
             _boletoContext = boletoContext;
             _logger = logger;
-        }
-
-        public async Task<bool> Exists(Expression<Func<Driver, bool>> filter)
-        {
-            return await _boletoContext.Conductor.AnyAsync(filter);
         }
 
         public async Task<OperationResult<List<DriverModel>>> GetAll()
@@ -32,18 +26,18 @@ namespace BusTicket.Data.Repositories
 
             try
             {
-                var Conductor = await _boletoContext.Conductor
-                                         .Where(d => d.Estatus == true)
-                                         .OrderByDescending(d => d.FechaModificacion)
-                                         .Select(d => new DriverModel()
-                                         {
-                                             ConductorId = d.Id,
-                                             Telefono = d.Telefono,
-                                             NumeroLicencia = d.NumeroLicencia,
-                                             FechaContratacion = d.FechaContratacion,
-                                         }).ToListAsync();
+                var drivers = await _boletoContext.Conductor
+                                    .Where(d => d.Estatus == true)
+                                    .OrderByDescending(d => d.FechaModificacion)
+                                    .Select(d => new DriverModel()
+                                    {
+                                        ConductorId = d.Id,
+                                        Telefono = d.Telefono,
+                                        NumeroLicencia = d.NumeroLicencia,
+                                        FechaContratacion = d.FechaContratacion,
+                                    }).ToListAsync();
 
-                operationResult.Result = Conductor;
+                operationResult.Result = drivers;
             }
             catch (Exception ex)
             {
@@ -51,6 +45,7 @@ namespace BusTicket.Data.Repositories
                 operationResult.Message = "Ocurrió un error obteniendo los conductores.";
                 _logger.LogError(operationResult.Message, ex.ToString());
             }
+
             return operationResult;
         }
 
@@ -60,17 +55,17 @@ namespace BusTicket.Data.Repositories
 
             try
             {
-                var Conductor = await _boletoContext.Conductor
-                                         .Where(filter)
-                                         .Select(d => new DriverModel()
-                                         {
-                                             ConductorId = d.Id,
-                                             Telefono = d.Telefono,
-                                             NumeroLicencia = d.NumeroLicencia,
-                                             FechaContratacion = d.FechaContratacion
-                                         }).ToListAsync();
+                var drivers = await _boletoContext.Conductor
+                                    .Where(filter)
+                                    .Select(d => new DriverModel()
+                                    {
+                                        ConductorId = d.Id,
+                                        Telefono = d.Telefono,
+                                        NumeroLicencia = d.NumeroLicencia,
+                                        FechaContratacion = d.FechaContratacion,
+                                    }).ToListAsync();
 
-                operationResult.Result = Conductor;
+                operationResult.Result = drivers;
             }
             catch (Exception ex)
             {
@@ -78,12 +73,8 @@ namespace BusTicket.Data.Repositories
                 operationResult.Message = "Ocurrió un error obteniendo los conductores.";
                 _logger.LogError(operationResult.Message, ex.ToString());
             }
-            return operationResult;
-        }
 
-        public Task<List<OperationResult<DriverModel>>> GetDriver(int idDriver)
-        {
-            throw new NotImplementedException();
+            return operationResult;
         }
 
         public async Task<OperationResult<DriverModel>> GetEntityBy(int Id)
@@ -95,7 +86,7 @@ namespace BusTicket.Data.Repositories
                 if (Id <= 0)
                 {
                     operationResult.Success = false;
-                    operationResult.Message = "El id del conductor es inválido";
+                    operationResult.Message = "El id del conductor es inválido.";
                     return operationResult;
                 }
 
@@ -113,7 +104,7 @@ namespace BusTicket.Data.Repositories
                     ConductorId = driver.Id,
                     Telefono = driver.Telefono,
                     NumeroLicencia = driver.NumeroLicencia,
-                    FechaContratacion = driver.FechaContratacion
+                    FechaContratacion = driver.FechaContratacion,
                 };
             }
             catch (Exception ex)
@@ -129,11 +120,12 @@ namespace BusTicket.Data.Repositories
         public async Task<OperationResult<DriverModel>> Remove(Driver entity)
         {
             OperationResult<DriverModel> operationResult = new OperationResult<DriverModel>();
+
             try
             {
                 if (entity is null)
                 {
-                    operationResult.Message = "La entidad conductor no puede ser nula";
+                    operationResult.Message = "La entidad conductor no puede ser nula.";
                     operationResult.Success = false;
                     return operationResult;
                 }
@@ -147,14 +139,14 @@ namespace BusTicket.Data.Repositories
                     return operationResult;
                 }
 
-                driver.Estatus = entity.Estatus;
+                driver.Estatus = false;
                 driver.FechaModificacion = entity.FechaModificacion;
                 driver.UsuarioModificacion = entity.UsuarioModificacion;
 
                 _boletoContext.Conductor.Update(driver);
                 await _boletoContext.SaveChangesAsync();
 
-                operationResult.Message = $"El conductor {entity.NumeroLicencia} fue desactivado correctamente.";
+                operationResult.Message = $"El conductor fue desactivado correctamente.";
             }
             catch (Exception ex)
             {
@@ -162,17 +154,19 @@ namespace BusTicket.Data.Repositories
                 operationResult.Message = "Ocurrió un error removiendo el conductor.";
                 _logger.LogError(operationResult.Message, ex.ToString());
             }
+
             return operationResult;
         }
 
         public async Task<OperationResult<DriverModel>> Save(Driver entity)
         {
             OperationResult<DriverModel> operationResult = new OperationResult<DriverModel>();
+
             try
             {
                 if (entity is null)
                 {
-                    operationResult.Message = "La entidad conductor no puede ser nula";
+                    operationResult.Message = "La entidad conductor no puede ser nula.";
                     operationResult.Success = false;
                     return operationResult;
                 }
@@ -187,7 +181,7 @@ namespace BusTicket.Data.Repositories
                 _boletoContext.Conductor.Add(entity);
                 await _boletoContext.SaveChangesAsync();
 
-                operationResult.Message = $"El conductor {entity.NumeroLicencia} fue agregado correctamente.";
+                operationResult.Message = "El conductor fue agregado correctamente.";
             }
             catch (Exception ex)
             {
@@ -195,6 +189,7 @@ namespace BusTicket.Data.Repositories
                 operationResult.Message = "Ocurrió un error guardando el conductor.";
                 _logger.LogError(operationResult.Message, ex.ToString());
             }
+
             return operationResult;
         }
 
@@ -206,7 +201,7 @@ namespace BusTicket.Data.Repositories
             {
                 if (entity is null)
                 {
-                    operationResult.Message = "La entidad conductor no puede ser nula";
+                    operationResult.Message = "La entidad conductor no puede ser nula.";
                     operationResult.Success = false;
                     return operationResult;
                 }
@@ -229,14 +224,14 @@ namespace BusTicket.Data.Repositories
                 _boletoContext.Conductor.Update(driver);
                 await _boletoContext.SaveChangesAsync();
 
-                operationResult.Message = $"El conductor {entity.NumeroLicencia} fue actualizado correctamente.";
+                operationResult.Message = "El conductor fue actualizado correctamente.";
 
                 operationResult.Result = new DriverModel()
                 {
                     ConductorId = driver.Id,
                     Telefono = driver.Telefono,
                     NumeroLicencia = driver.NumeroLicencia,
-                    FechaContratacion = driver.FechaContratacion
+                    FechaContratacion = driver.FechaContratacion,
                 };
             }
             catch (Exception ex)
@@ -245,6 +240,7 @@ namespace BusTicket.Data.Repositories
                 operationResult.Message = "Ocurrió un error actualizando el conductor.";
                 _logger.LogError(operationResult.Message, ex.ToString());
             }
+
             return operationResult;
         }
     }

@@ -1,17 +1,46 @@
-﻿using BusTicket.Data.Base;
+﻿
+using BusTicket.Data.Base;
 using BusTicket.Data.Entities;
 using BusTicket.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BusTicket.Data.Interfaces
 {
-    public interface ITripInfo : IBaseRepository<TripInfo, int, TripInfoModel>
+    public class ITripInfo : IBaseRepository<TripInfo, int, TripInfoModel>
     {
-        public Task<List<OperationResult<TripInfoModel>>> GetTripInfo(int idTripInfo);
+        public Task<bool> Exists(Expression<Func<TripInfo, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<OperationResult<List<TripInfoModel>>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<List<TripInfoModel>>> GetAll(Expression<Func<TripInfo, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<TripInfoModel>> GetEntityBy(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<TripInfoModel>> Remove(TripInfo entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<TripInfoModel>> Save(TripInfo entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult<TripInfoModel>> Update(TripInfo entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

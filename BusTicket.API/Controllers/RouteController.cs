@@ -6,25 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BusTicket.Web.API.Controllers
+namespace BusTicket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusController : ControllerBase
+    public class RouteController : ControllerBase
     {
-        private readonly IBaseRepository _busRepository;
-        public BusController(IBaseRepository busRepository) 
+        private readonly IRoute _route;
+        public RouteController(IRoute route) 
         {
-            _busRepository = busRepository;
+            _route = route;
         }
 
-        // GET: api/<BusController>
-        [HttpGet("GetBuses")]
+        // GET: api/<RouteController>
+        [HttpGet ("GetRoute")]
         public async Task<IActionResult> Get()
         {
-            OperationResult<List<BusModel>> result = await _busRepository.GetAll();
+            OperationResult<List<RouteModel>> result = await _route.GetAll();
 
-            if (result.Success) 
+            if (!result.Success)
             {
                 return BadRequest(result);
             }
@@ -32,26 +32,26 @@ namespace BusTicket.Web.API.Controllers
             return Ok(result);
         }
 
-        // GET api/<BusController>/5
+        // GET api/<RouteController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<BusController>
+        // POST api/<RouteController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<BusController>/5
+        // PUT api/<RouteController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<BusController>/5
+        // DELETE api/<RouteController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

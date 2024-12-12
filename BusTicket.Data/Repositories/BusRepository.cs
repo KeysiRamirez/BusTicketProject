@@ -5,15 +5,15 @@ using System.Linq.Expressions;
 using BusTicket.Data.Entities;
 using BusTicket.Data.Models;
 using BusTicket.Data.Base;
-using BusTicket.Data.Context.Configuration;
+using BusTicket.Data.Context;
 
 
 namespace BusTicket.Data.Repositories
 {
-    public sealed class BusRepository : IBusRepository
-    {
-        private readonly BoletoContext _boletoContext;
-        private readonly ILogger<BusRepository> _logger;
+        public sealed class BusRepository : IBusRepository
+        {
+            private readonly BoletoContext _boletoContext;
+            private readonly ILogger<BusRepository> _logger;
 
         public BusRepository(BoletoContext boletoContext, ILogger<BusRepository> logger)
         {
@@ -21,258 +21,246 @@ namespace BusTicket.Data.Repositories
             _logger = logger;
         }
 
-        public async Task<bool> Exists(Expression<Func<Bus, bool>> filter)
-        {
-            return await _boletoContext.Bus.AnyAsync(filter);
-        }
-
-        public async Task<OperationResult<List<BusModel>>> GetAll()
-        {
-            OperationResult<List<BusModel>> operationResult = new OperationResult<List<BusModel>>();
-
-            try
+            public async Task<OperationResult<List<BusModel>>> GetAll()
             {
-                var buses = await _boletoContext.Bus
-                                         .Where(cd => cd.Estatus == true)
-                                         .OrderByDescending(cd => cd.FechaModificacion)
-                                         .Select(cd => new BusModel()
-                                         {
-                                             IdBus = cd.Id,
-                                             CapacidadPiso1 = cd.CapacidadPiso1,
-                                             CapacidadPiso2 = cd.CapacidadPiso2,
-                                             Disponible = cd.Disponible,
-                                             FechaCreacion = cd.FechaCreacion,
-                                             Nombre = cd.Nombre,
-                                             NumeroPlaca = cd.NumeroPlaca,
-                                         }).ToListAsync();
+                OperationResult<List<BusModel>> operationResult = new OperationResult<List<BusModel>>();
+
+                try
+                {
+                    var buses = await _boletoContext.Buses
+                                             .Where(cd => cd.Estatus == true)
+                                             .OrderByDescending(cd => cd.FechaModificacion)
+                                             .Select(cd => new BusModel()
+                                             {
+                                                 IdBus = cd.Id,
+                                                 CapacidadPiso1 = cd.CapacidadPiso1,
+                                                 CapacidadPiso2 = cd.CapacidadPiso2,
+                                                 Disponible = cd.Disponible,
+                                                 FechaCreacion = cd.FechaCreacion,
+                                                 Nombre = cd.Nombre,
+                                                 NumeroPlaca = cd.NumeroPlaca,
+                                             }).ToListAsync();
 
 
-                operationResult.Result = buses;
-            }
-            catch (Exception ex)
-            {
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error obteniendo los buses.";
-                _logger.LogError(operationResult.Message, ex.ToString());
-            }
-            return operationResult;
-        }
-
-        public async Task<OperationResult<List<BusModel>>> GetAll(Expression<Func<Bus, bool>> filter)
-        {
-            OperationResult<List<BusModel>> operationResult = new OperationResult<List<BusModel>>();
-
-            try
-            {
-                var buses = await _boletoContext.Bus
-                                         .Where(filter)
-                                         .Select(cd => new BusModel()
-                                         {
-                                             IdBus = cd.Id,
-                                             CapacidadPiso1 = cd.CapacidadPiso1,
-                                             CapacidadPiso2 = cd.CapacidadPiso2,
-                                             Disponible = cd.Disponible,
-                                             FechaCreacion = cd.FechaCreacion,
-                                             Nombre = cd.Nombre,
-                                             NumeroPlaca = cd.NumeroPlaca,
-                                         }).ToListAsync();
-
-
-                operationResult.Result = buses;
-            }
-            catch (Exception ex)
-            {
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error obteniendo los buses.";
-                _logger.LogError(operationResult.Message, ex.ToString());
-            }
-            return operationResult;
-        }
-    
-
-        public Task<OperationResult<List<BusModel>>> GetBus(int idBus)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<OperationResult<BusModel>> GetEntityBy(int Id)
-        {
-            OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
-           
-            try
-            {
-                if (Id <= 0)
+                    operationResult.Result = buses;
+                }
+                catch (Exception ex)
                 {
                     operationResult.Success = false;
-                    operationResult.Message = "El id del bus es inválio";
-                    return operationResult;
+                    operationResult.Message = "Ocurrió un error obteniendo los buses.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
                 }
+                return operationResult;
+
+            }
+
+            public async Task<OperationResult<List<BusModel>>> GetAll(Expression<Func<Bus, bool>> filter)
+            {
+                OperationResult<List<BusModel>> operationResult = new OperationResult<List<BusModel>>();
+
+                try
+                {
+                    var buses = await _boletoContext.Buses
+                                             .Where(filter)
+                                             .Select(cd => new BusModel()
+                                             {
+                                                 IdBus = cd.Id,
+                                                 CapacidadPiso1 = cd.CapacidadPiso1,
+                                                 CapacidadPiso2 = cd.CapacidadPiso2,
+                                                 Disponible = cd.Disponible,
+                                                 FechaCreacion = cd.FechaCreacion,
+                                                 Nombre = cd.Nombre,
+                                                 NumeroPlaca = cd.NumeroPlaca,
+                                             }).ToListAsync();
 
 
-                var bus = await _boletoContext.Bus.FindAsync(Id);
-
-                if (bus is null)
+                    operationResult.Result = buses;
+                }
+                catch (Exception ex)
                 {
                     operationResult.Success = false;
-                    operationResult.Message = "El bus no se encuentra registrado.";
-                    return operationResult;
+                    operationResult.Message = "Ocurrió un error obteniendo los buses.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
                 }
-
-                operationResult.Result = new BusModel()
-                {
-                    CapacidadPiso1 = bus.CapacidadPiso1,
-                    CapacidadPiso2 = bus.CapacidadPiso2,
-                    Disponible = bus.Disponible,
-                    FechaCreacion = bus.FechaCreacion,
-                    IdBus = bus.Id,
-                    Nombre = bus.Nombre,
-                    NumeroPlaca = bus.NumeroPlaca
-                };
-            }
-            catch (Exception ex)
-            {
-
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error obteniendo el bus.";
-                _logger.LogError(operationResult.Message, ex.ToString());
+                return operationResult;
             }
 
-            return operationResult;
-        }
-
-        public async Task<OperationResult<BusModel>> Remove(Bus entity)
-        {
-            OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
-            try
+            public async Task<OperationResult<BusModel>> GetEntityBy(int Id)
             {
-                if (entity is null)
+                OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
+                try
                 {
-                    operationResult.Message = "La entidad bus no puede ser nula";
+                    if (Id <= 0)
+                    {
+                        operationResult.Success = false;
+                        operationResult.Message = "El id del bus es inválio";
+                        return operationResult;
+                    }
+
+
+                    var bus = await _boletoContext.Buses.FindAsync(Id);
+
+                    if (bus is null)
+                    {
+                        operationResult.Success = false;
+                        operationResult.Message = "El bus no se encuentra registrado.";
+                        return operationResult;
+                    }
+
+                    operationResult.Result = new BusModel()
+                    {
+                        CapacidadPiso1 = bus.CapacidadPiso1,
+                        CapacidadPiso2 = bus.CapacidadPiso2,
+                        Disponible = bus.Disponible,
+                        FechaCreacion = bus.FechaCreacion,
+                        IdBus = bus.Id,
+                        Nombre = bus.Nombre,
+                        NumeroPlaca = bus.NumeroPlaca
+                    };
+                }
+                catch (Exception ex)
+                {
+
                     operationResult.Success = false;
-                    return operationResult;
+                    operationResult.Message = "Ocurrió un error obteniendo el bus.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
                 }
-
-                var bus = await _boletoContext.Bus.FindAsync(entity.Id);
-
-                if (bus is null)
-                {
-                    operationResult.Message = "El bus no se encuentra registrado.";
-                    operationResult.Success = false;
-                    return operationResult;
-                }
-
-                bus.Estatus = entity.Estatus;
-                bus.FechaModificacion = bus.FechaModificacion;
-                bus.UsuarioModificacion = bus.UsuarioModificacion;
-
-                _boletoContext.Bus.Update(bus);
-                await _boletoContext.SaveChangesAsync();
-
-                operationResult.Message = $"El bus {entity.Nombre} fue desactivado correctamente.";
-
-
+                return operationResult;
             }
-            catch (Exception ex)
+
+            public async Task<OperationResult<BusModel>> Remove(Bus entity)
             {
-
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error removiendo el bus.";
-                _logger.LogError(operationResult.Message, ex.ToString());
-            }
-            return operationResult;
-        }
-
-        public async Task<OperationResult<BusModel>> Save(Bus entity)
-        {
-            OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
-            try
-            {
-                if (entity is null)
+                OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
+                try
                 {
-                    operationResult.Message = "La entidad bus no puede ser nula";
-                    operationResult.Success = false;
-                    return operationResult;
+                    if (entity is null)
+                    {
+                        operationResult.Message = "La entidad bus no puede ser nula";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+                    var bus = await _boletoContext.Buses.FindAsync(entity.Id);
+
+                    if (bus is null)
+                    {
+                        operationResult.Message = "El bus no se encuentra registrado.";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+                    bus.Estatus = entity.Estatus;
+                    bus.FechaModificacion = bus.FechaModificacion;
+                    bus.UsuarioModificacion = bus.UsuarioModificacion;
+
+                    _boletoContext.Buses.Update(bus);
+                    await _boletoContext.SaveChangesAsync();
+
+                    operationResult.Message = $"El bus {entity.Nombre} fue desactivado correctamente.";
+
+
                 }
-
-
-                if (string.IsNullOrWhiteSpace(entity.NumeroPlaca))
+                catch (Exception ex)
                 {
-                    operationResult.Message = "El número es requerido.";
+
                     operationResult.Success = false;
-                    return operationResult;
+                    operationResult.Message = "Ocurrió un error removiendo el bus.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
                 }
-
-                _boletoContext.Bus.Add(entity);
-                await _boletoContext.SaveChangesAsync();
-
-                operationResult.Message = $"El bus {entity.Nombre} fue agregado correctamente.";
+                return operationResult;
             }
-            catch (Exception ex)
+
+            public async Task<OperationResult<BusModel>> Save(Bus entity)
             {
-
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error guardando el bus.";
-                _logger.LogError(operationResult.Message, ex.ToString());
-            }
-            return operationResult;
-        }
-
-        public async Task<OperationResult<BusModel>> Update(Bus entity)
-        {
-            OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
-
-            try
-            {
-                if (entity is null)
+                OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
+                try
                 {
-                    operationResult.Message = "La entidad bus no puede ser nula";
+                    if (entity is null)
+                    {
+                        operationResult.Message = "La entidad bus no puede ser nula";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+
+                    if (string.IsNullOrWhiteSpace(entity.NumeroPlaca))
+                    {
+                        operationResult.Message = "El número es requerido.";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+                    _boletoContext.Buses.Add(entity);
+                    await _boletoContext.SaveChangesAsync();
+
+                    operationResult.Message = $"El bus {entity.Nombre} fue agregado correctamente.";
+                }
+                catch (Exception ex)
+                {
+
                     operationResult.Success = false;
-                    return operationResult;
+                    operationResult.Message = "Ocurrió un error guardando el bus.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
                 }
-
-                var bus = await _boletoContext.Bus.FindAsync(entity.Id);
-
-                if (bus is null)
-                {
-                    operationResult.Message = "El bus no se encuentra registrado.";
-                    operationResult.Success = false;
-                    return operationResult;
-                }
-
-                bus.NumeroPlaca = entity.NumeroPlaca;
-                bus.CapacidadPiso1 = entity.CapacidadPiso1;
-                bus.CapacidadPiso2 = entity.CapacidadPiso2;
-                bus.Nombre = entity.Nombre;
-                bus.Disponible = entity.Disponible;
-                bus.FechaModificacion = entity.FechaModificacion;
-                bus.UsuarioModificacion = entity.UsuarioModificacion;
-
-
-                _boletoContext.Bus.Update(bus);
-                await _boletoContext.SaveChangesAsync();
-
-                operationResult.Message = $"El bus {entity.Nombre} fue actualizado correctamente.";
-
-                operationResult.Result = new BusModel()
-                {
-                    IdBus = bus.Id,
-                    CapacidadPiso1 = bus.CapacidadPiso1,
-                    CapacidadPiso2 = bus.CapacidadPiso2,
-                    Disponible = bus.Disponible,
-                    Nombre = bus.Nombre,
-                    NumeroPlaca = bus.NumeroPlaca,
-                    FechaCreacion = bus.FechaModificacion.Value,
-                };
-
+                return operationResult;
             }
-            catch (Exception ex)
+
+            public async Task<OperationResult<BusModel>> Update(Bus entity)
             {
+                OperationResult<BusModel> operationResult = new OperationResult<BusModel>();
 
-                operationResult.Success = false;
-                operationResult.Message = "Ocurrió un error actualizando el bus.";
-                _logger.LogError(operationResult.Message, ex.ToString());
+                try
+                {
+                    if (entity is null)
+                    {
+                        operationResult.Message = "La entidad bus no puede ser nula";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+                    var bus = await _boletoContext.Buses.FindAsync(entity.Id);
+
+                    if (bus is null)
+                    {
+                        operationResult.Message = "El bus no se encuentra registrado.";
+                        operationResult.Success = false;
+                        return operationResult;
+                    }
+
+                    bus.NumeroPlaca = entity.NumeroPlaca;
+                    bus.CapacidadPiso1 = entity.CapacidadPiso1;
+                    bus.CapacidadPiso2 = entity.CapacidadPiso2;
+                    bus.Nombre = entity.Nombre;
+                    bus.Disponible = entity.Disponible;
+                    bus.FechaModificacion = entity.FechaModificacion;
+                    bus.UsuarioModificacion = entity.UsuarioModificacion;
+
+
+                    _boletoContext.Buses.Update(bus);
+                    await _boletoContext.SaveChangesAsync();
+
+                    operationResult.Message = $"El bus {entity.Nombre} fue actualizado correctamente.";
+
+                    operationResult.Result = new BusModel()
+                    {
+                        IdBus = bus.Id,
+                        CapacidadPiso1 = bus.CapacidadPiso1,
+                        CapacidadPiso2 = bus.CapacidadPiso2,
+                        Disponible = bus.Disponible,
+                        Nombre = bus.Nombre,
+                        NumeroPlaca = bus.NumeroPlaca,
+                        FechaCreacion = bus.FechaModificacion.Value,
+                    };
+
+                }
+                catch (Exception ex)
+                {
+
+                    operationResult.Success = false;
+                    operationResult.Message = "Ocurrió un error actualizando el bus.";
+                    _logger.LogError(operationResult.Message, ex.ToString());
+                }
+                return operationResult;
             }
-            return operationResult;
         }
     }
-}

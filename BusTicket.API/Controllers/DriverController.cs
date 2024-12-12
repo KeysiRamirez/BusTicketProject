@@ -6,25 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BusTicket.Web.API.Controllers
+namespace BusTicket.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusController : ControllerBase
+    public class DriverController : ControllerBase
     {
-        private readonly IBaseRepository _busRepository;
-        public BusController(IBaseRepository busRepository) 
+        private readonly IDriver _driver;
+
+        public DriverController(IDriver driver)
         {
-            _busRepository = busRepository;
+            _driver = driver;
         }
 
-        // GET: api/<BusController>
-        [HttpGet("GetBuses")]
-        public async Task<IActionResult> Get()
+        // GET: api/<DriverController>
+        [HttpGet ("GetDriver")]
+        public async Task<ActionResult> Get()
         {
-            OperationResult<List<BusModel>> result = await _busRepository.GetAll();
 
-            if (result.Success) 
+            OperationResult<List<DriverModel>> result = await _driver.GetAll();
+
+            if (!result.Success)
             {
                 return BadRequest(result);
             }
@@ -32,26 +34,26 @@ namespace BusTicket.Web.API.Controllers
             return Ok(result);
         }
 
-        // GET api/<BusController>/5
+        // GET api/<DriverController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<BusController>
+        // POST api/<DriverController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<BusController>/5
+        // PUT api/<DriverController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<BusController>/5
+        // DELETE api/<DriverController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

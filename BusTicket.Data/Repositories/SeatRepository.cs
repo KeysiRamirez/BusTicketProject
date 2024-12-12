@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using BusTicket.Data.Entities;
 using BusTicket.Data.Models;
 using BusTicket.Data.Base;
-using BusTicket.Data.Context.Configuration;
+using BusTicket.Data.Context;
 
 namespace BusTicket.Data.Repositories
 {

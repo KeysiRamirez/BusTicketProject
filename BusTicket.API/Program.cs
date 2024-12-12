@@ -14,14 +14,15 @@ namespace BusTicket.API
 
             // Add services to the container.
 
-            builder.Services.AddDbContext<BoletoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BoletoConnString")));
+            builder.Services.AddDbContext<BoletoContext>(options => 
+                                                            options.UseSqlServer(builder.Configuration.GetConnectionString("BoletoConnString")));
 
-            builder.Services.AddTransient<IBusRepository, BusRepository>();
-
+            builder.Services.AddTransient<IBusRepository, BusRepository>();  
+            builder.Services.AddTransient<IDriver, DriverRepository>();
+            builder.Services.AddTransient<IBusDriver, BusDriverRepository>();
+            builder.Services.AddTransient<IRoute, RouteRepository>();
 
             builder.Services.AddControllers();
-
-
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
